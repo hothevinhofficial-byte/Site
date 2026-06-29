@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Tiếng Trung Cùng Thảo Ly - 15 Bài HSK 1</title>
+    <style>
+        :root {
+            --pink-light: #FFF0F5;
+            --pink-accent: #FFB6C1;
+            --pink-dark: #FF69B4;
+            --blue-light: #E6F2FF;
+            --blue-accent: #B0E0E6;
+            --blue-dark: #4682B4;
+            --text-main: #333333;
+            --shadow: rgba(0, 0, 0, 0.08);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+
+        body {
+            background: linear-gradient(135deg, #FFE4E1 0%, #E8F0FE 50%, #D4E6F1 100%);
+            min-height: 100vh;
+            color: var(--text-main);
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-container {
+            text-align: center; max-width: 600px; width: 100%; margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.6); padding: 25px; border-radius: 24px;
+            box-shadow: 0 10px 30px var(--shadow); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        .avatar-frame {
+            width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 15px;
+            border: 5px solid white; box-shadow: 0 8px 20px rgba(255, 182, 193, 0.6);
+            background: linear-gradient(45deg, var(--pink-accent), var(--blue-accent));
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .avatar-placeholder { color: white; font-weight: bold; font-size: 1.2rem; }
+
+        .slogan {
+            font-size: 1.8rem; font-weight: 700; margin-bottom: 10px;
+            background: linear-gradient(45deg, #E91E63, #1E88E5);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .web-link {
+            font-size: 0.95rem; color: var(--blue-dark); text-decoration: none; font-weight: 600;
+            display: inline-block; padding: 6px 16px; background: white; border-radius: 20px;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+
+        .workspace { display: grid; grid-template-columns: 350px 1fr; gap: 25px; width: 100%; max-width: 1100px; align-items: start; }
+
+        @media (max-width: 850px) { .workspace { grid-template-columns: 1fr; } }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.85); border-radius: 20px; padding: 15px;
+            box-shadow: 0 8px 24px var(--shadow); max-height: 620px; overflow-y: auto;
+        }
+
+        .sidebar-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 15px; padding-left: 8px; border-left: 4px solid var(--pink-dark); }
+
+        .lesson-item {
+            background: white; padding: 12px 15px; border-radius: 12px; margin-bottom: 8px;
+            cursor: pointer; font-weight: 600; font-size: 0.9rem; display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.2s;
+        }
+
+        .lesson-item:hover { background: var(--pink-light); transform: translateX(4px); }
+        .lesson-item.active { background: linear-gradient(135deg, #FFF0F5 0%, #E6F2FF 100%); border: 1px solid var(--blue-accent); color: var(--blue-dark); }
+
+        .flashcard-area {
+            background: rgba(255, 255, 255, 0.75); padding: 35px; border-radius: 20px;
+            box-shadow: 0 8px 24px var(--shadow); display: flex; flex-direction: column; align-items: center; min-height: 480px; justify-content: center;
+        }
+
+        .current-lesson-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 25px; color: #444; text-align: center; }
+
+        .flashcard-wrapper { perspective: 1000px; width: 100%; max-width: 420px; height: 260px; margin-bottom: 30px; cursor: pointer; }
+        .flashcard { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 12px 35px rgba(0,0,0,0.08); border-radius: 24px; }
+        .flashcard.flipped { transform: rotateY(180deg); }
+
+        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 24px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 25px; text-align: center; }
+        .card-front { background: linear-gradient(135deg, #ffffff, var(--pink-light)); border: 2px solid rgba(255, 182, 193, 0.4); }
+        .card-back { background: linear-gradient(135deg, #ffffff, var(--blue-light)); border: 2px solid rgba(176, 224, 230, 0.4); transform: rotateY(180deg); }
+
+        .chinese-char { font-size: 4rem; font-weight: bold; color: #222; margin-bottom: 12px; }
+        .pinyin { font-size: 1.5rem; color: var(--blue-dark); font-weight: 600; margin-bottom: 12px; }
+        .meaning { font-size: 1.35rem; color: #D81B60; font-weight: 700; }
+        .hint-text { position: absolute; bottom: 15px; font-size: 0.8rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
+
+        .controls { display: flex; align-items: center; gap: 20px; width: 100%; max-width: 420px; justify-content: space-between; }
+        .control-btn { background: white; border: 1px solid #ddd; padding: 12px 24px; border-radius: 14px; cursor: pointer; font-weight: 600; color: #555; transition: all 0.2s; }
+        .control-btn:hover:not(:disabled) { background: var(--pink-dark); color: white; border-color: var(--pink-dark); }
+        .control-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+        .progress-text { font-size: 1.05rem; font-weight: 700; color: #555; background: white; padding: 6px 16px; border-radius: 20px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+
+    <div class="hero-container">
+        <div class="avatar-frame"><div class="avatar-placeholder">Thảo Ly</div></div>
+        <h1 class="slogan">Học Tiếng Trung Cùng Thảo Ly</h1>
+        <a href="https://tiengtrungthaoly.vn" target="_blank" class="web-link">tiengtrungthaoly.vn</a>
+    </div>
+
+    <div class="workspace">
+        <div class="sidebar" id="lesson-sidebar"></div>
+
+        <div class="flashcard-area">
+            <div class="current-lesson-title" id="lesson-title">Đang tải dữ liệu...</div>
+            <div class="flashcard-wrapper" onclick="flipCard()">
+                <div class="flashcard" id="card">
+                    <div class="card-face card-front">
+                        <div class="chinese-char" id="card-char">-</div>
+                        <div class="hint-text">💡 Bấm để xem nghĩa</div>
+                    </div>
+                    <div class="card-face card-back">
+                        <div class="pinyin" id="card-pinyin">-</div>
+                        <div class="meaning" id="card-meaning">-</div>
+                        <div class="hint-text">💡 Bấm để xem chữ Hán</div>
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="control-btn" id="btn-prev" onclick="prevWord()">← Trước</button>
+                <span class="progress-text" id="card-progress">0 / 0</span>
+                <button class="control-btn" id="btn-next" onclick="nextWord()">Sau →</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dữ liệu từ vựng được phân tách thủ công rõ ràng theo bài, mỗi bài gồm 30 từ/cụm từ không trùng lặp
+        const hsk1Data = {
+            1: {
+                title: "Bài 1: Chào hỏi & Giao tiếp cơ bản",
+                words: [
+                    { char: "你好", pinyin: "nǐ hǎo", meaning: "Chào bạn" },
+                    { char: "您", pinyin: "nín", meaning: "Ngài, ông, bà (kính trọng)" },
+                    { char: "你们", pinyin: "nǐmen", meaning: "Các bạn" },
+                    { char: "对不起", pinyin: "duìbuqǐ", meaning: "Xin lỗi" },
+                    { char: "没关系", pinyin: "méiguānxi", meaning: "Không sao đâu" },
+                    { char: "谢谢", pinyin: "xièxie", meaning: "Cảm ơn" },
+                    { char: "不客气", pinyin: "búkèqi", meaning: "Không có gì" },
+                    { char: "再见", pinyin: "zàijiàn", meaning: "Tạm biệt" },
+                    { char: "请", pinyin: "qǐng", meaning: "Xin mời, làm ơn" },
+                    { char: "不", pinyin: "bù", meaning: "Không" },
+                    { char: "我", pinyin: "wǒ", meaning: "Tôi, tớ, mình" },
+                    { char: "叫", pinyin: "jiào", meaning: "Gọi là, tên là" },
+                    { char: "什么", pinyin: "shénme", meaning: "Cái gì" },
+                    { char: "名字", pinyin: "míngzi", meaning: "Tên" },
+                    { char: "老师", pinyin: "lǎoshī", meaning: "Thầy, cô giáo" },
+                    { char: "学生", pinyin: "xuéshēng", meaning: "Học sinh" },
+                    { char: "吗", pinyin: "ma", meaning: "Không? (trợ từ nghi vấn)" },
+                    { char: "人", pinyin: "rén", meaning: "Người" },
+                    { char: "是", pinyin: "shì", meaning: "Là" },
+                    { char: "中国", pinyin: "Zhōngguó", meaning: "Trung Quốc" },
+                    { char: "越南", pinyin: "Yuènán", meaning: "Việt Nam" },
+                    { char: "美国", pinyin: "Měiguó", meaning: "Mỹ" },
+                    { char: "哪", pinyin: "nǎ", meaning: "Nào" },
+                    { char: "国", pinyin: "guó", meaning: "Nước, quốc gia" },
+                    { char: "呢", pinyin: "ne", meaning: "Còn... thì sao?" },
+                    { char: "他", pinyin: "tā", meaning: "Anh ấy" },
+                    { char: "她", pinyin: "tā", meaning: "Cô ấy" },
+                    { char: "它", pinyin: "tā", meaning: "Nó (đồ vật, con vật)" },
+                    { char: "们", pinyin: "men", meaning: "Các (chỉ số nhiều)" },
+                    { char: "朋友", pinyin: "péngyou", meaning: "Bạn bè" }
+                ]
+            },
+            2: {
+                title: "Bài 2: Số đếm & Tuổi tác gia đình",
+                words: [
+                    { char: "一", pinyin: "yī", meaning: "Số 1" },
+                    { char: "二", pinyin: "èr", meaning: "Số 2" },
+                    { char: "三", pinyin: "sān", meaning: "Số 3" },
+                    { char: "四", pinyin: "sì", meaning: "Số 4" },
+                    { char: "五", pinyin: "wǔ", meaning: "Số 5" },
+                    { char: "六", pinyin: "liù", meaning: "Số 6" },
+                    { char: "七", pinyin: "qī", meaning: "Số 7" },
+                    { char: "八", pinyin: "bā", meaning: "Số 8" },
+                    { char: "九", pinyin: "jiǔ", meaning: "Số 9" },
+                    { char: "十", pinyin: "shí", meaning: "Số 10" },
+                    { char: "几", pinyin: "jǐ", meaning: "Mấy" },
+                    { char: "岁", pinyin: "suì", meaning: "Tuổi" },
+                    { char: "多大", pinyin: "duō dà", meaning: "Bao nhiêu tuổi" },
+                    { char: "今年", pinyin: "jīnnián", meaning: "Năm nay" },
+                    { char: "有", pinyin: "yǒu", meaning: "Có" },
+                    { char: "没有", pinyin: "méi yǒu", meaning: "Không có" },
+                    { char: "个", pinyin: "gè", meaning: "Cái, chiếc (lượng từ)" },
+                    { char: "口", pinyin: "kǒu", meaning: "Khẩu (lượng từ số thành viên gia đình)" },
+                    { char: "家", pinyin: "jiā", meaning: "Nhà, gia đình" },
+                    { char: "爸爸", pinyin: "bàba", meaning: "Bố, cha" },
+                    { char: "妈妈", pinyin: "māma", meaning: "Mẹ" },
+                    { char: "儿子", pinyin: "érzi", meaning: "Con trai" },
+                    { char: "女儿", pinyin: "nǚ'ér", meaning: "Con gái" },
+                    { char: "孩子", pinyin: "háizi", meaning: "Con cái, đứa trẻ" },
+                    { char: "哥哥", pinyin: "gēge", meaning: "Anh trai" },
+                    { char: "姐姐", pinyin: "jiějie", meaning: "Chị gái" },
+                    { char: "弟弟", pinyin: "dìdi", meaning: "Em trai" },
+                    { char: "妹妹", pinyin: "mèimei", meaning: "Em gái" },
+                    { char: "两", pinyin: "liǎng", meaning: "Hai (dùng cho số lượng)" },
+                    { char: "多", pinyin: "duō", meaning: "Nhiều" }
+                ]
+            },
+            3: {
+                title: "Bài 3: Thời gian & Ngày tháng",
+                words: [
+                    { char: "现在", pinyin: "xiànzài", meaning: "Bây giờ" },
+                    { char: "点", pinyin: "diǎn", meaning: "Giờ" },
+                    { char: "分", pinyin: "fēn", meaning: "Phút" },
+                    { char: "半", pinyin: "bàn", meaning: "Rưỡi, một nửa" },
+                    { char: "早上", pinyin: "zǎoshang", meaning: "Buổi sáng sớm" },
+                    { char: "上午", pinyin: "shàngwǔ", meaning: "Buổi sáng" },
+                    { char: "中午", pinyin: "zhōngwǔ", meaning: "Buổi trưa" },
+                    { char: "下午", pinyin: "xiàwǔ", meaning: "Buổi chiều" },
+                    { char: "晚上", pinyin: "wǎnshang", meaning: "Buổi tối" },
+                    { char: "今天", pinyin: "jīntiān", meaning: "Hôm nay" },
+                    { char: "昨天", pinyin: "zuótiān", meaning: "Hôm qua" },
+                    { char: "明天", pinyin: "míngtiān", meaning: "Ngày mai" },
+                    { char: "星期", pinyin: "xīngqī", meaning: "Tuần, thứ" },
+                    { char: "星期一", pinyin: "xīngqīyī", meaning: "Thứ hai" },
+                    { char: "星期二", pinyin: "xīngqī'èr", meaning: "Thứ ba" },
+                    { char: "星期三", pinyin: "xīngqīsān", meaning: "Thứ tư" },
+                    { char: "星期四", pinyin: "xīngqīsì", meaning: "Thứ năm" },
+                    { char: "星期五", pinyin: "xīngqīwǔ", meaning: "Thứ sáu" },
+                    { char: "星期六", pinyin: "xīngqīliù", meaning: "Thứ bảy" },
+                    { char: "星期天", pinyin: "xīngqītiān", meaning: "Chủ nhật" },
+                    { char: "月", pinyin: "yuè", meaning: "Tháng" },
+                    { char: "号", pinyin: "hào", meaning: "Ngày, số" },
+                    { char: "日", pinyin: "rì", meaning: "Ngày" },
+                    { char: "年", pinyin: "nián", meaning: "Năm" },
+                    { char: "时候", pinyin: "shíhou", meaning: "Lúc, khi" },
+                    { char: "什么时候", pinyin: "shénme shíhou", meaning: "Khi nào, bao giờ" },
+                    { char: "几点", pinyin: "jǐ diǎn", meaning: "Mấy giờ" },
+                    { char: "刻", pinyin: "kè", meaning: "Khắc (15 phút)" },
+                    { char: "岁数", pinyin: "suìshu", meaning: "Tuổi tác" },
+                    { char: "号 ngoại", pinyin: "hào wài", meaning: "Số phụ" }
+                ]
+            },
+            4: {
+                title: "Bài 4: Hoạt động hàng ngày",
+                words: [
+                    { char: "起床", pinyin: "qǐ chuáng", meaning: "Thức dậy" },
+                    { char: "吃", pinyin: "chī", meaning: "Ăn" },
+                    { char: "饭", pinyin: "fàn", meaning: "Cơm, bữa ăn" },
+                    { char: "早饭", pinyin: "zǎofàn", meaning: "Bữa sáng" },
+                    { char: "午饭", pinyin: "wǔfàn", meaning: "Bữa trưa" },
+                    { char: "晚饭", pinyin: "wǎnfàn", meaning: "Bữa tối" },
+                    { char: "去", pinyin: "qù", meaning: "Đi" },
+                    { char: "学校", pinyin: "xuéxiào", meaning: "Trường học" },
+                    { char: "工作", pinyin: "gōngzuò", meaning: "Làm việc" },
+                    { char: "医院", pinyin: "yīyuàn", meaning: "Bệnh viện" },
+                    { char: "商店", pinyin: "shāngdiàn", meaning: "Cửa hàng" },
+                    { char: "回", pinyin: "huí", meaning: "Về" },
+                    { char: "回家", pinyin: "huí jiā", meaning: "Về nhà" },
+                    { char: "睡觉", pinyin: "shuì jiào", meaning: "Ngủ" },
+                    { char: "做", pinyin: "zuò", meaning: "Làm" },
+                    { char: "喜欢", pinyin: "xǐhuan", meaning: "Thích" },
+                    { char: "学习", pinyin: "xuéxí", meaning: "Học tập" },
+                    { char: "汉语", pinyin: "Hànyǔ", meaning: "Tiếng Trung" },
+                    { char: "英语", pinyin: "Yīngyǔ", meaning: "Tiếng Anh" },
+                    { char: "读", pinyin: "dú", meaning: "Đọc" },
+                    { char: "写", pinyin: "xiě", meaning: "Viết" },
+                    { char: "听", pinyin: "tīng", meaning: "Nghe" },
+                    { char: "说", pinyin: "shuō", meaning: "Nói" },
+                    { char: "看", pinyin: "kàn", meaning: "Nhìn, xem" },
+                    { char: "说话", pinyin: "shuō huà", meaning: "Nói chuyện" },
+                    { char: "读书", pinyin: "dú shū", meaning: "Đọc sách" },
+                    { char: "写字", pinyin: "xiě zì", meaning: "Viết chữ" },
+                    { char: "听写", pinyin: "tīngxiě", meaning: "Nghe viết" },
+                    { char: "考试", pinyin: "kǎoshì", meaning: "Thi cử" },
+                    { char: "来", pinyin: "lái", meaning: "Đến" }
+                ]
+            },
+            5: {
+                title: "Bài 5: Địa điểm & Vị trí phương hướng",
+                words: [
+                    { char: "这", pinyin: "zhè", meaning: "Đây, này" },
+                    { char: "那", pinyin: "nà", meaning: "Kia, đó" },
+                    { char: "哪儿", pinyin: "nǎr", meaning: "Ở đâu" },
+                    { char: "这里", pinyin: "zhèlǐ", meaning: "Ở đây" },
+                    { char: "那里", pinyin: "nàlǐ", meaning: "Ở kia" },
+                    { char: "在", pinyin: "zài", meaning: "Ở, tại" },
+                    { char: "上", pinyin: "shàng", meaning: "Trên" },
+                    { char: "下", pinyin: "xià", meaning: "Dưới" },
+                    { char: "前", pinyin: "qián", meaning: "Trước" },
+                    { char: "后", pinyin: "hòu", meaning: "Sau" },
+                    { char: "左", pinyin: "zuǒ", meaning: "Bên trái" },
+                    { char: "右", pinyin: "yòu", meaning: "Bên phải" },
+                    { char: "里面", pinyin: "lǐmiàn", meaning: "Bên trong" },
+                    { char: "外面", pinyin: "wàimiàn", meaning: "Bên ngoài" },
+                    { char: "旁边", pinyin: "pángbiān", meaning: "Bên cạnh" },
+                    { char: "车站", pinyin: "chēzhàn", meaning: "Bến xe" },
+                    { char: "火车站", pinyin: "huǒchēzhàn", meaning: "Ga tàu hỏa" },
+                    { char: "飞机场", pinyin: "fēijīchǎng", meaning: "Sân bay" },
+                    { char: "饭馆", pinyin: "fànguǎn", meaning: "Quán ăn" },
+                    { char: "电影院", pinyin: "diànyǐngyuàn", meaning: "Rạp phim" },
+                    { char: "教室", pinyin: "jiàoshì", meaning: "Phòng học" },
+                    { char: "办公室", pinyin: "bàngōngshì", meaning: "Văn phòng" },
+                    { char: "房间", pinyin: "fángjiān", meaning: "Căn phòng" },
+                    { char: "桌子", pinyin: "zhuōzi", meaning: "Cái bàn" },
+                    { char: "椅子", pinyin: "yǐzi", meaning: "Cái ghế" },
+                    { char: "床", pinyin: "chuáng", meaning: "Cái giường" },
+                    { char: "电视", pinyin: "diànshì", meaning: "Tivi" },
+                    { char: "电脑", pinyin: "diànnǎo", meaning: "Máy tính" },
+                    { char: "后面", pinyin: "hòumiàn", meaning: "Phía sau" },
+                    { char: "前面", pinyin: "qiánmiàn", meaning: "Phía trước" }
+                ]
+            },
+            6: {
+                title: "Bài 6: Giao thông & Đi lại",
+                words: [
+                    { char: "怎么", pinyin: "zěnme", meaning: "Như thế nào" },
+                    { char: "坐", pinyin: "zuò", meaning: "Ngồi, đi (xe)" },
+                    { char: "飞机", pinyin: "fēijī", meaning: "Máy bay" },
+                    { char: "出租车", pinyin: "chūzūchē", meaning: "Xe taxi" },
+                    { char: "公共汽车", pinyin: "gōnggòng qìchē", meaning: "Xe buýt" },
+                    { char: "地铁", pinyin: "dìtiě", meaning: "Tàu điện ngầm" },
+                    { char: "自行车", pinyin: "zìxíngchē", meaning: "Xe đạp" },
+                    { char: "走", pinyin: "zǒu", meaning: "Đi, đi bộ
